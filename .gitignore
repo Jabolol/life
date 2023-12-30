@@ -13,6 +13,3 @@ zig-out
 _fresh/
 # npm dependencies
 node_modules/
-
-# webassembly files
-*.wasm
