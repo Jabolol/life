@@ -30,3 +30,4 @@ jobs:
         with:
           project: "gameoflife"
           entrypoint: "./www/main.ts"
+          exclude: node_modules
