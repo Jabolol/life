@@ -30,6 +30,7 @@ export type Context = {
   selected: string;
   figures: Figures;
   change: boolean;
+  pause: boolean;
   running: boolean;
   canvas: RefObject<HTMLCanvasElement>;
 };

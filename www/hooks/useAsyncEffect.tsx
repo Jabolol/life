@@ -7,7 +7,7 @@ import {
 } from "@preact/signals";
 
 export function useAsyncEffect<T, K, V>(
-  instance: ReadonlySignal<() => () => AsyncGenerator<T, K, V>>,
+  instance: ReadonlySignal<() => AsyncGenerator<T, K, V>>,
   context: Signal<Context>,
 ) {
   const signal = useSignal<T>({} as T);
@@ -23,10 +23,13 @@ export function useAsyncEffect<T, K, V>(
   };
 
   useSignalEffect(() => {
-    if (!fired.value || context.value.change) {
-      fired.value = true;
-      context.value = { ...context.value, change: false };
-      runEffect(instance.value()());
+    switch (true) {
+      case context.value.change:
+        context.value = { ...context.value, change: false };
+        /* falls through */
+      case !fired.value:
+        fired.value = true;
+        runEffect(instance.value());
     }
   });
 

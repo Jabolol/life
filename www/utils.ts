@@ -140,13 +140,17 @@ export const initMap = (context: Signal<Context>) => {
 
   const item = context.value.figures[context.value.selected];
 
-  context.value.exports.reset();
-  ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  if (!context.value.pause) {
+    context.value.exports.reset();
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  for (const [x, y] of item) {
-    context.value.exports.set_cell(x, y, 1);
-    ctx.fillStyle = COLOR;
-    ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    for (const [x, y] of item) {
+      context.value.exports.set_cell(x, y, 1);
+      ctx.fillStyle = COLOR;
+      ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    }
+  } else {
+    context.value.pause = false;
   }
 
   next(context);
@@ -168,6 +172,10 @@ export const initLoop = (context: Signal<Context>) => {
   }
 
   const animation = () => {
+    if (!context.value.running) {
+      return;
+    }
+
     context.value.exports.step();
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -186,7 +194,7 @@ export const initLoop = (context: Signal<Context>) => {
     setTimeout(() => requestAnimationFrame(animation), DELAY);
   };
   if (!context.value.running) {
-    context.value = {...context.value, running: true};
+    context.value = { ...context.value, running: true };
     requestAnimationFrame(animation);
   }
   next(context);
@@ -206,5 +214,6 @@ export const init = (ref: RefObject<HTMLCanvasElement>) => ({
   figures: {},
   change: false,
   running: false,
+  pause: false,
   selected: "koks_galaxy",
 } as Context);

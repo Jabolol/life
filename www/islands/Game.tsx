@@ -10,20 +10,21 @@ export default function Game() {
   const context = useSignal<Context>(init(ref));
   const kind = useComputed(() => context.value.step);
   const fn = useComputed(() => (fnMap[context.value.step] ?? next));
-  const instance = useComputed(() => generate);
+  const instance = useComputed(() => generate());
 
   useAsyncEffect(instance, context);
 
   function generate() {
     return async function* () {
       while (kind.value !== "END") {
+
         yield await fn.value(context);
       }
     };
   }
 
   return (
-    <div class="flex items-center justify-center flex-col gap-5">
+    <div class="flex items-center justify-center flex-col gap-5 m-5">
       <canvas
         width={WIDTH}
         height={HEIGHT}
