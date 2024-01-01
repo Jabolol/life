@@ -215,5 +215,5 @@ export const init = (ref: RefObject<HTMLCanvasElement>) => ({
   change: false,
   running: false,
   pause: false,
-  selected: "koks_galaxy",
+  selected: "pi-heptomino",
 } as Context);
