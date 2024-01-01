@@ -17,7 +17,6 @@ export default function Game() {
   function generate() {
     return async function* () {
       while (kind.value !== "END") {
-
         yield await fn.value(context);
       }
     };
